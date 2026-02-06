@@ -5,6 +5,7 @@ export const safariApp: AppConfig = {
   id: "safari-app",
   name: "Safari",
   icon: "/icons/safari.svg",
+  category: "Productivity",
   windowContent: Safari,
   isPreInstalled: true,
    menu: {

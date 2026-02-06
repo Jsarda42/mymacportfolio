@@ -6,6 +6,7 @@ export const settingsApp: AppConfig = {
   name: "Settings",
   icon: "/icons/settings.png",
   windowContent: SettingsView,
+  category: "System",
   menu: {
     label: "Settings",
     items: [

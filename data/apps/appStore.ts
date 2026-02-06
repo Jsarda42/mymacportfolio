@@ -5,6 +5,7 @@ export const appStoreApp: AppConfig = {
   id: "app-store",
   name: "App Store",
   icon: "/icons/appStore.png",
+  category: "System",
   windowContent: AppStoreView,
   menu: {
     label: "App Store",

@@ -9,6 +9,7 @@ export interface AppConfig {
   isPreInstalled?: boolean;
   description?: string;
   screenshots?: string[];
+  category?: string
   menu: {
     label: string;
     items: MenuItem[];

@@ -6,6 +6,7 @@ export const spotifyApp: AppConfig = {
   name: "Spotify",
   icon: "/icons/spotify.svg",
   windowContent: Spotify,
+  category: "Entertainment",
   menu: {
     label: "Spotify",
     items: [
