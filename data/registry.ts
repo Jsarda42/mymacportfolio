@@ -4,6 +4,7 @@ import { settingsApp } from "./apps/settings";
 import { calculatorApp } from "./apps/calculator";
 import { safariApp } from "./apps/safari";
 import { spotifyApp } from "./apps/spotify";
+import { MailApp } from "./apps/mail";
 
 export const ALL_APPS: AppConfig[] = [
   spotifyApp,
@@ -11,6 +12,8 @@ export const ALL_APPS: AppConfig[] = [
   settingsApp,
   calculatorApp,
   safariApp,
+  MailApp
+
 ];
 
 export const getAppById = (id: string) => ALL_APPS.find(app => app.id === id);

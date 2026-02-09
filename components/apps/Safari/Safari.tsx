@@ -76,7 +76,7 @@ const handleOpenPage = (url: string, name: string) => {
           </div>
         ) : (
           <div className="p-10 animate-in fade-in zoom-in-95 duration-300">
-            <h2 className="text-3xl font-bold mb-8">Favorites</h2>
+            <h2 className="text-3xl font-bold mb-8">My projects</h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8">
               {favorites.map((fav) => (
                 <button 

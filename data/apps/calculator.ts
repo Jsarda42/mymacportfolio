@@ -1,5 +1,5 @@
 import { AppConfig } from "@/types/system";
-import Calculator from "@/components/apps/Calculator";
+import Calculator from "@/components/apps/Calculator/Calculator";
 
 export const calculatorApp: AppConfig = {
   id: "calculator-app",
