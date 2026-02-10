@@ -43,8 +43,12 @@ elif user_err_type:
 # 2. If no crash, run the logical validation
 if not error:
     current_obj = locals().get('ft_list')
+
+    if current_obj == ["Hello", "tata!"] and id(current_obj) == original_id:
+        error = "Nothing happened!"
+        hint = "You haven't changed the list yet!"
     
-    if current_obj is None:
+    elif current_obj is None:
         error = "Variable Error"
         hint = "ft_list seems to have disappeared!"
     
