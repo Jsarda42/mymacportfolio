@@ -5,47 +5,60 @@
 </head>
 <body>
     <script>
-        let pyodide;
-        async function init() {
-            pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/" });
-            await pyodide.runPythonAsync(`
+    let pyodide;
+    async function init() {
+        pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/" });
+        await pyodide.runPythonAsync(`
 import sys, io, traceback
 
-def execute_grader(setup_code, user_code, test_code):
+def execute_grader(setup_code, user_code, secret_test):
     out = io.StringIO()
     sys.stdout = out
     sys.stderr = out
     
-    # Critical: Use the same dict for globals and locals
     shared_scope = {}
-    
+    user_error_type = None
+
     try:
+        # 1. Run Setup
         exec(setup_code, shared_scope, shared_scope)
-        exec(user_code, shared_scope, shared_scope)
+        
+        # 2. Run User Code - We wrap this individually!
+        try:
+            exec(user_code, shared_scope, shared_scope)
+        except Exception as e:
+            # Store the error name so secret_test can see it
+            shared_scope['__USER_ERROR__'] = type(e).__name__
+            shared_scope['__USER_ERROR_MSG__'] = str(e)
+            # We don't stop here; we want to proceed to the grader for a hint!
+
         user_output = out.getvalue()
 
-        # Clear buffer for validation output
+        # 3. Clear buffer for validation output
         out.truncate(0)
         out.seek(0)
         
-        exec(test_code, shared_scope, shared_scope)
+        # 4. Run Secret Test
+        # We pass the shared_scope which now contains the error info if one happened
+        exec(secret_test, shared_scope, shared_scope)
         test_output = out.getvalue()
 
         return user_output + "---VALIDATION_START---" + test_output
     except Exception:
-        return out.getvalue() + "---VALIDATION_START---❌ Python Error:\\n" + traceback.format_exc()
-            `);
-            window.parent.postMessage({ type: 'READY' }, '*');
-        }
+        # This catches errors in the SECRET TEST itself (developer bugs)
+        return out.getvalue() + "---VALIDATION_START---❌ Grader Error:\\n" + traceback.format_exc()
+        `);
+        window.parent.postMessage({ type: 'READY' }, '*');
+    }
 
-        window.addEventListener('message', async (e) => {
-            if (e.data.type === 'RUN') {
-                const runner = pyodide.globals.get('execute_grader');
-                const result = runner(e.data.setupCode, e.data.userCode, e.data.secretTest);
-                window.parent.postMessage({ type: 'RESULT', result }, '*');
-            }
-        });
-        init();
-    </script>
+    window.addEventListener('message', async (e) => {
+        if (e.data.type === 'RUN') {
+            const runner = pyodide.globals.get('execute_grader');
+            const result = runner(e.data.setupCode, e.data.userCode, e.data.secretTest);
+            window.parent.postMessage({ type: 'RESULT', result }, '*');
+        }
+    });
+    init();
+</script>
 </body>
 </html>
