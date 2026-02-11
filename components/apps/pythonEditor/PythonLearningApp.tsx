@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Editor from '@monaco-editor/react';
-import { EXERCISES } from '@/data/exercices/exercices';
+import { EXERCISE00 } from '@/data/exercices/exercice00';
 
 interface TerminalLine {
     text: string;
@@ -14,14 +14,14 @@ type TabType = 'exercise' | 'editor' | 'terminal';
 export default function ProgressiveIDE() {
     const [levelIndex, setLevelIndex] = useState(0);
     const [activeTab, setActiveTab] = useState<TabType>('editor');
-    const [code, setCode] = useState(EXERCISES[0].initialCode);
+    const [code, setCode] = useState(EXERCISE00[0].initialCode);
     const [output, setOutput] = useState<TerminalLine[]>([]);
     const [activeHint, setActiveHint] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
     const [showHint, setShowHint] = useState(false);
 
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const currentEx = EXERCISES[levelIndex];
+    const currentEx = EXERCISE00[levelIndex];
 
     useEffect(() => {
         setCode(currentEx.initialCode);
@@ -83,7 +83,7 @@ export default function ProgressiveIDE() {
         <div className="h-screen w-full flex flex-col bg-[#0d1117] text-white overflow-hidden font-sans">
             <header className="h-14 border-b border-white/10 flex items-center justify-between px-4 lg:px-6 bg-[#161b22] shrink-0">
                 <span className="font-mono text-[10px] lg:text-xs font-bold tracking-widest text-blue-400 uppercase">
-                    Ex {currentEx.id}
+                    Ex {currentEx.exNumber}
                 </span>
                 <button onClick={runCode} className="bg-green-600 hover:bg-green-500 px-4 py-1.5 rounded-md font-bold text-xs transition-all active:scale-95">
                     RUN
