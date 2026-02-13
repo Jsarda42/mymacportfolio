@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Star } from "lucide-react";
+import Image from "next/image";
 
 function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
     return (
@@ -38,7 +39,15 @@ export default function SideBar() {
             </nav>
 
             <div className="mt-auto p-1 md:p-2 flex items-center justify-center md:justify-start gap-3 border-t border-black/5 dark:border-white/5 pt-4">
-                <div className="w-8 h-8 rounded-full bg-linear-to-br from-orange-400 to-blue-500 shadow-sm shrink-0" />
+                <div className="w-8 h-8 rounded-full overflow-hidden shadow-sm shrink-0 relative bg-gray-200 dark:bg-gray-800">
+                    <Image
+                        src="/profile/profilePic.jpeg"
+                        alt="Julien Sarda"
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+
                 <span className="hidden md:block text-sm font-medium opacity-90 truncate text-black dark:text-white">
                     Julien Sarda
                 </span>
