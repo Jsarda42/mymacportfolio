@@ -6,6 +6,7 @@ export const calculatorApp: AppConfig = {
   name: "Calculator",
   icon: "/icons/calculator.webp",
   category: "Utilities",
+  isFeature: true,
   windowContent: Calculator,
   menu: {
     label: "Calculator",

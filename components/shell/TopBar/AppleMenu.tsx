@@ -18,7 +18,6 @@ export function AppleMenu() {
 
     useEffect(() => {
         const handleClose = () => setIsOpen(false);
-
         window.addEventListener("close-all-menus", handleClose);
         return () => window.removeEventListener("close-all-menus", handleClose);
     }, []);
@@ -30,7 +29,7 @@ export function AppleMenu() {
                     e.stopPropagation();
                     setIsOpen(!isOpen);
                 }}
-                className={`px-3 h-8 flex items-center transition-colors rounded-md relative z-10001 ${isOpen ? "bg-white/20" : "hover:bg-white/10"
+                className={`px-3 h-8 flex items-center transition-colors rounded-md relative z-10001 ${isOpen ? "bg-black/10" : "hover:bg-black/5"
                     }`}
             >
                 <AppleIcon sx={{ fontSize: 18 }} className="text-black" />
@@ -43,17 +42,23 @@ export function AppleMenu() {
                         onMouseDown={() => setIsOpen(false)}
                     />
                     <div
-                        className="absolute left-0 top-9 w-56 bg-[#1e1e1e]/80 backdrop-blur-2xl 
-                                   rounded-lg shadow-2xl border border-white/10 py-1 text-white z-10001"
+                        className="absolute left-0 top-9 w-56 backdrop-blur-2xl rounded-lg shadow-2xl border py-1.5 z-10001
+                                   /* Light Mode */
+                                   bg-white/80 border-black/10 text-black
+                                   /* Dark Mode */
+                                   dark:bg-[#1a1a1a]/90 dark:border-white/10 dark:text-white"
                     >
                         {APPLE_MENU_ITEMS.map((item) => (
                             item.type === "separator" ? (
-                                <div key={item.id} className="h-px bg-white/10 my-1 mx-1" />
+                                <div key={item.id} className="h-px my-1 mx-1 bg-black/10 dark:bg-white/10" />
                             ) : (
                                 <button
                                     key={item.id}
-                                    className="w-[calc(100%-8px)] text-left px-4 py-1.5 text-[13px] 
-                                               transition-colors rounded-sm mx-1 hover:bg-blue-600 hover:text-white"
+                                    className="w-[calc(100%-8px)] text-left px-4 py-1.5 text-[13px] transition-colors rounded-md mx-1 
+                                               /* Light Hover */
+                                               hover:bg-blue-600 hover:text-white
+                                               /* Dark Hover (Subtle White) */
+                                               dark:hover:bg-white/10 dark:hover:text-white"
                                     onClick={() => handleItemClick(item.id)}
                                 >
                                     {item.label}

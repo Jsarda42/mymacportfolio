@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Editor from '@monaco-editor/react';
-import { EXERCISE00 } from '@/data/exercices/exercice00';
+import { ALL_EXERCICES } from '@/data/exercices/exercices';
 
 interface TerminalLine {
     text: string;
@@ -14,22 +14,25 @@ type TabType = 'exercise' | 'editor' | 'terminal';
 export default function ProgressiveIDE() {
     const [levelIndex, setLevelIndex] = useState(0);
     const [activeTab, setActiveTab] = useState<TabType>('editor');
-    const [code, setCode] = useState(EXERCISE00[0].initialCode);
     const [output, setOutput] = useState<TerminalLine[]>([]);
     const [activeHint, setActiveHint] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
     const [showHint, setShowHint] = useState(false);
-
+    
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const currentEx = EXERCISE00[levelIndex];
+    const currentEx = ALL_EXERCICES[levelIndex];
+    const [code, setCode] = useState(currentEx.initialCode);
 
     useEffect(() => {
-        setCode(currentEx.initialCode);
-        setOutput([]);
-        setIsComplete(false);
-        setActiveHint(null);
-        setShowHint(false);
-    }, [levelIndex, currentEx.initialCode]);
+        if (currentEx) {
+            setCode(currentEx.initialCode);
+            setOutput([]);
+            setIsComplete(false);
+            setActiveHint(null);
+            setShowHint(false);
+            setActiveTab('editor');
+        }
+    }, [levelIndex]);
 
     useEffect(() => {
         const handleMessage = (e: MessageEvent) => {
@@ -37,7 +40,7 @@ export default function ProgressiveIDE() {
                 const [userOut, validation] = (e.data.result || "").split("---VALIDATION_START---");
                 const newLogs: TerminalLine[] = [];
                 if (userOut?.trim()) newLogs.push({ text: userOut.trim(), isError: false });
-                
+
                 if (validation?.trim()) {
                     const lines = validation.trim().split('\n');
                     lines.forEach((line: string) => {
@@ -66,14 +69,14 @@ export default function ProgressiveIDE() {
         setActiveHint(null);
         setShowHint(false);
         if (window.innerWidth < 1024) {
-        setActiveTab('terminal');
-    }
+            setActiveTab('terminal');
+        }
         const fullUserCode = `${currentEx.lockedCode}\n${code}`;
-        iframeRef.current.contentWindow.postMessage({ 
-            type: 'RUN', 
+        iframeRef.current.contentWindow.postMessage({
+            type: 'RUN',
             setupCode: currentEx.setupCode,
             userCode: fullUserCode,
-            secretTest: currentEx.secretTest 
+            secretTest: currentEx.secretTest
         }, '*');
     };
 
@@ -95,9 +98,8 @@ export default function ProgressiveIDE() {
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-tighter transition-colors ${
-                            activeTab === tab ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5' : 'text-gray-500'
-                        }`}
+                        className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-tighter transition-colors ${activeTab === tab ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5' : 'text-gray-500'
+                            }`}
                     >
                         {tab}
                     </button>
@@ -105,12 +107,13 @@ export default function ProgressiveIDE() {
             </nav>
 
             <main className="flex-1 flex overflow-hidden relative">
-                
+
                 <aside className={`${activeTab === 'exercise' ? 'flex' : 'hidden'} lg:flex w-full lg:w-80 border-r border-white/10 flex-col bg-[#0d1117] overflow-y-auto p-6`}>
                     <h2 className="text-xl font-bold mb-4 text-gray-100">{currentEx.title}</h2>
                     <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-line mb-6">
                         {currentEx.instruction}
                     </p>
+                    {/* Hint Logic */}
                     {activeHint && (
                         <div className="border-t border-white/10 pt-4">
                             <button onClick={() => setShowHint(!showHint)} className="text-xs font-bold text-yellow-500 uppercase tracking-widest">
@@ -126,7 +129,7 @@ export default function ProgressiveIDE() {
                 </aside>
 
                 <section className={`${activeTab === 'editor' ? 'flex' : 'hidden'} lg:flex flex-1 flex-col bg-[#1e1e1e]`}>
-                    <div className="py-2 px-4 opacity-40 pointer-events-none select-none border-b border-white/5 bg-[#161b22]">
+                   <div className="py-2 px-4 opacity-40 pointer-events-none select-none border-b border-white/5 bg-[#161b22]">
                         <pre className="font-mono text-[14px] leading-5 text-blue-300">
                             {currentEx.lockedCode}
                         </pre>
@@ -157,6 +160,16 @@ export default function ProgressiveIDE() {
                             {line.text}
                         </pre>
                     ))}
+
+                    {/* Next Button Logic */}
+                    {isComplete && levelIndex < ALL_EXERCICES.length - 1 && (
+                        <button
+                            onClick={() => setLevelIndex(prev => prev + 1)}
+                            className="mt-6 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-all animate-pulse"
+                        >
+                            NEXT EXERCISE: {ALL_EXERCICES[levelIndex + 1].exNumber} →
+                        </button>
+                    )}
                 </aside>
             </main>
 

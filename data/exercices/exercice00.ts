@@ -1,14 +1,6 @@
-export type Exercise00 = {
-    id: number;
-    exNumber: string;
-    title: string;
-    instruction: string;
-    lockedCode: string;
-    initialCode: string;
-    setupCode: string;
-    secretTest: string;
-};
-export const EXERCISE00: Exercise00[] = [
+import { Exercises } from "@/types/exercices";
+
+export const EXERCISE00: Exercises[] = [
     {
         id: 0,
         exNumber: "00",

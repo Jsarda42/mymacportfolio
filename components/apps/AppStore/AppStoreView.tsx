@@ -8,19 +8,6 @@ import HeroSection from "./HeroSection";
 import FeaturedCard from "./FeatureCard";
 import AppsMenu from "./AppsMenu";
 
-const features = [
-  {
-    id: 1,
-    title: "Spotify",
-    img: "/icons/spotify.svg",
-  },
-  {
-    id: 2,
-    title: "Calculator",
-    img: "/icons/calculator.webp",
-  }
-];
-
 export default function AppStore() {
   const { installedAppIds, loadingAppIds, installApp, openApp } = useOS();
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
@@ -38,9 +25,13 @@ export default function AppStore() {
     });
   }, [loadingAppIds, progress]);
 
-const installableApps = ALL_APPS.filter(
-  (app) => app.id !== "app-store" && !app.isPreInstalled
-);
+  const installableApps = ALL_APPS.filter(
+    (app) => app.id !== "app-store" && !app.isPreInstalled
+  );
+
+    const featureApps = ALL_APPS.filter(
+    (app) => app.isFeature,
+  );
 
   return (
     <div className="flex h-full bg-white dark:bg-[#1e1e1e] text-black dark:text-white font-sans overflow-hidden select-none">
@@ -50,11 +41,11 @@ const installableApps = ALL_APPS.filter(
           <HeroSection />
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 mb-12">
-            {features.map((feature) => (
+            {featureApps.map((app) => (
               <FeaturedCard
-                key={feature.id}
-                title={feature.title}
-                img={feature.img}
+                key={app.id}
+                title={app.name}
+                img={app.icon}
               />
             ))}
           </div>

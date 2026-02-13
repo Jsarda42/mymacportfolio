@@ -7,7 +7,7 @@ export const PythonEditorApp: AppConfig = {
   name: "Python Editor",
   icon: "/icons/python.png",
   category: "Editor Tool",
-  isPreInstalled: true,
+  isFeature: true,
   windowContent: PythonLearningApp,
   menu: {
     label: "Editor",

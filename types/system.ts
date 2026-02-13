@@ -7,6 +7,7 @@ export interface AppConfig {
   windowContent: ComponentType<any>;
   isInstallable?: boolean;
   isPreInstalled?: boolean;
+  isFeature?: boolean;
   description?: string;
   screenshots?: string[];
   category?: string
