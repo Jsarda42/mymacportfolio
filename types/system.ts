@@ -5,7 +5,7 @@ export interface AppConfig {
   name: string;
   icon: string;
   windowContent: ComponentType<any>;
-  itemsMenu: MenuItem[];
+  itemsMenu?: MenuItem[];
   isInstallable?: boolean;
   isPreInstalled?: boolean;
   isFeature?: boolean;
