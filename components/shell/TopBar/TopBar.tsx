@@ -51,7 +51,7 @@ export function TopBar() {
               <div className="absolute left-0 top-7 w-56 backdrop-blur-2xl rounded-lg shadow-2xl border py-1.5 z-10001
                               bg-white/80 border-black/10 text-black
                               dark:bg-[#1a1a1a]/90 dark:border-white/10 dark:text-white">
-                {activeApp?.itemsMenu.map((item) => (
+                {activeApp?.itemsMenu?.map((item) => (
                   item.type === "separator" ? (
                     <div key={item.id} className="h-px my-1 mx-1 bg-black/10 dark:bg-white/10" />
                   ) : (
