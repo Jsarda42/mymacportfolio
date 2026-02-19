@@ -5,12 +5,13 @@ export interface AppConfig {
   name: string;
   icon: string;
   windowContent: ComponentType<any>;
+  itemsMenu: MenuItem[];
   isInstallable?: boolean;
   isPreInstalled?: boolean;
   isFeature?: boolean;
   description?: string;
   screenshots?: string[];
-  category?: string
+  category?: string;
   menu: {
     label: string;
     items: MenuItem[];
